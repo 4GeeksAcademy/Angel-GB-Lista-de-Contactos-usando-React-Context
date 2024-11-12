@@ -12,7 +12,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			contactos: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -37,8 +38,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			recuperarAgenda: () => {
+				fetch("https://playground.4geeks.com/contact/agendas/AngelGB/contacts")
+				.then(response => response.json())
+				.then(response => setStore({"contactos" : response.contacts}))
+				.catch(error => console.log(error))
 			}
-		}
+		}	
 	};
 };
 
