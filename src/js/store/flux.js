@@ -25,27 +25,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					fetch().then().then(data => setStore({ "foo": data.bar }))
 				*/
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+			post: {
+				"name": "string",
+				"phone": "",
+				"email": "",
+				"address": ""
 			},
 			recuperarAgenda: () => {
 				fetch("https://playground.4geeks.com/contact/agendas/AngelGB/contacts")
-				.then(response => response.json())
-				.then(response => setStore({"contactos" : response.contacts}))
-				.catch(error => console.log(error))
+					.then(response => response.json())
+					.then(response => setStore({ "contactos": response.contacts }))
+					.catch(error => console.log(error))
+			},
+			crearContacto: () => {
+				fetch("https://playground.4geeks.com/contact/agendas/AngelGB/contacts", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(post)
+				})
+					.then(response => response.json())
+					.then(() => cargarTareas())
+					.catch(error => console.log(error()))
 			}
-		}	
+		}
 	};
 };
 
