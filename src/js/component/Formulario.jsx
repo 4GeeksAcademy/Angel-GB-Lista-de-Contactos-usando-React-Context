@@ -1,7 +1,7 @@
-import React from "react";
-
+import React, { useContext } from "react";
+import { Context } from "../store/appContext";
 const Formulario = () => {
-
+    const { store, actions } = useContext(Context);
 
 
 
@@ -16,9 +16,11 @@ const Formulario = () => {
                 <span className="input-group-text">Direccion</span>
                 <input type="address" placeholder="" aria-label="Direccion" className="form-control" />
             </div>
-
             <input type="text" placeholder="" aria-label="Email" className="form-control" />
             <input type="number" placeholder="" aria-label="Telefono" className="form-control" />
+            <div className="col-4">
+                <button type="button" className="btn btn-warning">Aceptar</button>
+            </div>
         </div>
     )
 }

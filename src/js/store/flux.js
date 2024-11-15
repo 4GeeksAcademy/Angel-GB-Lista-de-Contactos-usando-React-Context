@@ -25,12 +25,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					fetch().then().then(data => setStore({ "foo": data.bar }))
 				*/
 			},
-			post: {
-				"name": "string",
-				"phone": "",
-				"email": "",
-				"address": ""
-			},
 			recuperarAgenda: () => {
 				fetch("https://playground.4geeks.com/contact/agendas/AngelGB/contacts")
 					.then(response => response.json())
@@ -41,10 +35,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				fetch("https://playground.4geeks.com/contact/agendas/AngelGB/contacts", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(post)
+					body: JSON.stringify()
 				})
 					.then(response => response.json())
-					.then(() => cargarTareas())
+					.then((response) => console.log(response))
 					.catch(error => console.log(error()))
 			}
 		}
