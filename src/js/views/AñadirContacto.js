@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { Context } from "../store/appContext";
+import { Context } from "../store/appContext.js";
 
 import "../../styles/demo.css";
-import Formulario from "../component/Formulario.jsx";
+import CrearFormulario from "../component/CrearFormulario.jsx";
 
-export const Demo = () => {
+export const AñadirContacto = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
 		<div className="">
-			<Formulario />
+			<CrearFormulario />
 		</div>
 	);
 };
