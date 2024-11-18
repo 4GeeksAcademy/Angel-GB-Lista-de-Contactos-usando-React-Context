@@ -88,7 +88,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: JSON.stringify(contacto)
 				})
 				.then(response => response.json())
-				.then(response =>getActions().recuperarAgenda())
+				.then(() => getActions().recuperarAgenda())
+				.catch((error) => console.log(error));
 			},
 			eliminarContacto: (id) => {
 				fetch(`https://playground.4geeks.com/contact/agendas/AngelGB/contacts/${id}`, {

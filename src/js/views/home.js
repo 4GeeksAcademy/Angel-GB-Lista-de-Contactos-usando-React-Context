@@ -26,7 +26,7 @@ export const Home = () => {
 								<p className="card-text">Direccion: {item.address}</p>
 								<p className="card-text">Telefono: {item.phone}</p>
 								<p className="card-text">Email: {item.email}</p>
-								<Link to={"/EditarContacto"} >
+								<Link to={`/EditarContacto/${item.id}`} >
 								<FaUserEdit/>
 								</Link>
 								<MdDelete onClick={() => { actions.eliminarContacto(item.id) }}  />

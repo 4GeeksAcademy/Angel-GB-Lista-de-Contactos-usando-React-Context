@@ -1,21 +1,31 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const EditarFormulario = () => {
-    const { actions } = useContext(Context);
-    
-    // Estados locales para almacenar temporalmente los valores de los inputs
+    const { id } = useParams();
+    const { store, actions } = useContext(Context);
+
+
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
 
 
+    useEffect(() => {
+        const contacto = store.contactos.find((contacto) => contacto.id === parseInt(id));
+        if (contacto) {
+            setName(contacto.name);
+            setAddress(contacto.address);
+            setPhone(contacto.phone);
+            setEmail(contacto.email);
+        }
+    }, [id, store.contactos]);
+
     const formularioCompleto = () => {
         return name !== '' && address !== '' && phone !== '' && email !== '';
     };
-
 
     const enviarContacto = () => {
         if (formularioCompleto()) {
@@ -23,7 +33,7 @@ const EditarFormulario = () => {
             actions.actualizarDireccion(address);
             actions.actualizarTelefono(phone);
             actions.actualizarEmail(email);
-            actions.editarContacto();
+            actions.editarContacto(id);
         } else {
             alert('Por favor, complete todos los campos antes de enviar');
         }
@@ -33,7 +43,7 @@ const EditarFormulario = () => {
         <div className="container-fluid p-5">
             <div className="card">
                 <div className="card-header text-center p-2">
-                    <h3>Introduzca los datos del contacto</h3>
+                    <h3>Editar datos del contacto</h3>
                 </div>
                 <div className="card-body">
                     <div className="input-group p-2">
@@ -81,16 +91,15 @@ const EditarFormulario = () => {
                 </div>
                 <div className="card-footer">
                     <div className="d-flex justify-content-center">
-                        <Link to="/">
-                            <button
-                                onClick={enviarContacto}
-                                disabled={!formularioCompleto()}
-                                type="button"
-                                className="btn btn-warning m-1"
-                            >
-                                Aceptar
-                            </button>
-                        </Link>
+                        <button
+                            onClick={enviarContacto}
+                            disabled={!formularioCompleto()}
+                            type="button"
+                            className="btn btn-warning m-1"
+                        >
+                            Guardar
+                        </button>
+
                         <Link to="/">
                             <button type="button" className="btn btn-warning m-1">Cancelar</button>
                         </Link>

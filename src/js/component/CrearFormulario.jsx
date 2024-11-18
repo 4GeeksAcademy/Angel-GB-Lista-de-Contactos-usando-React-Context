@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const CrearFormulario = () => {
     const { actions } = useContext(Context);
     
-    // Estados locales para almacenar temporalmente los valores de los inputs
+
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
@@ -24,8 +24,6 @@ const CrearFormulario = () => {
             actions.actualizarTelefono(phone);
             actions.actualizarEmail(email);
             actions.crearContacto();
-        } else {
-            alert('Por favor, complete todos los campos antes de enviar');
         }
     };
 
@@ -81,7 +79,7 @@ const CrearFormulario = () => {
                 </div>
                 <div className="card-footer">
                     <div className="d-flex justify-content-center">
-                        <Link to="/">
+                        
                             <button
                                 onClick={enviarContacto}
                                 disabled={!formularioCompleto()}
@@ -90,7 +88,7 @@ const CrearFormulario = () => {
                             >
                                 Aceptar
                             </button>
-                        </Link>
+                        
                         <Link to="/">
                             <button type="button" className="btn btn-warning m-1">Cancelar</button>
                         </Link>
