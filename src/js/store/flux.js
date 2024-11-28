@@ -1,13 +1,17 @@
+import { toast } from "sonner";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			agendas: [],
-			traerContactos: [],
+			contactosRandomUser: [],
 			contactos: [],
+			contactosLocal: [],
 			nombre: [],
 			address: [],
 			phone: [],
-			email: []
+			email: [],
+			genero: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -19,24 +23,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					fetch().then().then(data => setStore({ "foo": data.bar }))
 				*/
 			},
-			traerContactos: () => {
-				fetch("https://randomuser.me/api/?results=6")
-				.then((response => response.json()))
-				.then((response => console.log(response)
-				.then((response => setStore({ "traerContactos": response.results })))
-				))
-			},
-			recuperarAgendas: () => {
-				fetch("https://playground.4geeks.com/contact/agendas")
-				.then(response => response.json())
-				.then(response => setStore({"agendas" : response.agendas}))
-			},
+			
+			// recuperarAgendas: () => {
+			// 	fetch("https://playground.4geeks.com/contact/agendas")
+			// 		.then(response => response.json())
+			// 		.then(response => setStore({ "agendas": response.agendas }))
+			// },
 			crearAgenda: () => {
 				fetch("https://playground.4geeks.com/contact/agendas/AngelGB", {
 					method: "POST"
 				})
-				.then(response => response.json())
-				.then(response => getActions().recuperarAgenda())
+					.then(response => response.json())
+					.then(response => getActions().recuperarAgenda())
 			},
 			recuperarAgenda: () => {
 				fetch("https://playground.4geeks.com/contact/agendas/AngelGB/contacts")
@@ -55,7 +53,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			actualizarDireccion: (nuevaDireccion) => {
 				setStore({ address: [nuevaDireccion] });
-			},			
+			},
+			actualizarGenero:(nuevoGenero) => {
+				setStore({ genero: [nuevoGenero]})
+			},
 			crearContacto: () => {
 				const store = getStore();
 				const contacto = {
@@ -64,7 +65,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					email: store.email[0],
 					address: store.address[0]
 				};
-			
+
 				fetch("https://playground.4geeks.com/contact/agendas/AngelGB/contacts", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
@@ -87,17 +88,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify(contacto)
 				})
-				.then(response => response.json())
-				.then(() => getActions().recuperarAgenda())
-				.catch((error) => console.log(error));
+					.then(response => response.json())
+					.then(() => getActions().recuperarAgenda())
+					.catch((error) => console.log(error));
 			},
 			eliminarContacto: (id) => {
 				fetch(`https://playground.4geeks.com/contact/agendas/AngelGB/contacts/${id}`, {
 					method: "DELETE",
 				})
-				.then((response => getActions().recuperarAgenda()))
-				.catch((error => console.log(error)
-				))
+					.then(() => getActions().recuperarAgenda())
+					.catch((error => console.log(error)))
 			}
 		}
 	};

@@ -1,16 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const EditarFormulario = () => {
     const { id } = useParams();
     const { store, actions } = useContext(Context);
+    const navigate = useNavigate()
 
 
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
+    const [dominioEmail, setDominioEmail] = useState("");
 
 
     useEffect(() => {
@@ -20,22 +23,35 @@ const EditarFormulario = () => {
             setAddress(contacto.address);
             setPhone(contacto.phone);
             setEmail(contacto.email);
+
+            const [localPart, domainPart] = contacto.email.split("@");
+        setEmail(localPart || '');
+        setDominioEmail(domainPart ? `@${domainPart}` : '');
         }
     }, [id, store.contactos]);
 
     const formularioCompleto = () => {
-        return name !== '' && address !== '' && phone !== '' && email !== '';
+        return name !== '' && address !== '' && phone !== '' && email !== '' && dominioEmail !== '';
     };
+
+    const paginaPrincipal = () => {
+        navigate("/")
+    }
 
     const enviarContacto = () => {
         if (formularioCompleto()) {
+            const emailCompleto = `${email}${dominioEmail}`;
             actions.actualizarNombre(name);
             actions.actualizarDireccion(address);
             actions.actualizarTelefono(phone);
-            actions.actualizarEmail(email);
+            actions.actualizarEmail(emailCompleto);
             actions.editarContacto(id);
-        } else {
-            alert('Por favor, complete todos los campos antes de enviar');
+            toast.success('Contacto guardado correctamente', {
+                action: {
+                  label: 'ok',
+                  onClick: paginaPrincipal
+                },
+              })
         }
     };
 
@@ -76,7 +92,7 @@ const EditarFormulario = () => {
                                 />
                             </div>
                         </div>
-                        <div className="col-6">
+                        {/* <div className="col-6">
                             <div className="input-group p-2">
                                 <span className="input-group-text">Email</span>
                                 <input
@@ -85,8 +101,31 @@ const EditarFormulario = () => {
                                     type="email"
                                     className="form-control"
                                 />
+                            </div> */}
+                        <div className="col-5">
+                            <div className="input-group p-2">
+                                <span className="input-group-text">Email</span>
+                                <input
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "@") {
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                    type="email"
+                                    className="form-control"
+                                />
+                                <select className="form-select" aria-label="Default select example"
+                                onChange={(e) => {setDominioEmail(e.target.value)}}>
+                                        <option value={dominioEmail}>{dominioEmail}</option>
+                                        <option value="@hotmail.com">@hotmail.com</option>
+                                        <option value="@yahoo.com">@yahoo.com</option>
+                                        <option value="@gmail.com">@gmail.com</option>
+                                    </select>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div className="card-footer">
@@ -101,7 +140,7 @@ const EditarFormulario = () => {
                         </button>
 
                         <Link to="/">
-                            <button type="button" className="btn btn-warning m-1">Cancelar</button>
+                            <button type="button" className="btn btn-warning m-1">Volver</button>
                         </Link>
                     </div>
                 </div>

@@ -5,12 +5,13 @@ import ScrollToTop from "./component/scrollToTop";
 import { Home } from "./views/home";
 import { AñadirContacto } from "./views/AñadirContacto.js";
 import { EditarContacto } from "./views/EditarContacto.jsx";
-import { Single } from "./views/single";
 import { AgendasFull } from "./views/AgendasFull.jsx";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import { Toaster } from "sonner";
+
 
 //create your first component
 const Layout = () => {
@@ -20,8 +21,10 @@ const Layout = () => {
 
 	return (
 		<div>
+			<Toaster richColors />
 			<BrowserRouter basename={basename}>
 				<ScrollToTop>
+				
 					<Navbar />
 					<Routes>
 						<Route path="/" element={<Home />} />
