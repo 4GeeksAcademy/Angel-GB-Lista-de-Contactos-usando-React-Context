@@ -1,43 +1,46 @@
+
 import React, { useContext, useEffect, } from "react";
 import { Link } from "react-router-dom";
-import "../../styles/home.css";
 import { Context } from "../store/appContext";
+import { toast } from "sonner";
+
 
 export const Home = () => {
 	const { store, actions } = useContext(Context)
 
+	const fotoConIdFija = (id) => {
+		// const genero = ${genero} store.genero
+		return `https://randomuser.me/api/portraits/men/${id}.jpg`;
+	};
+	
 	useEffect(() => {
 		actions.recuperarAgenda()
+		actions.importarAgendasRandom()
 	}, [])
 
-	console.log(store.contactos);
-
 	return (
-		<div>
-			<div className="text-center mt-5">
-				<div><h1>Agenda</h1></div>
+		<div className="container-fluid p-4">
+			<div className="text-center mt-2">
+				<div><h1>Tus contactos</h1></div>
 			</div>
-			<div className="btn-group d-flex justify-content-center">
-				<div className="col-4">
-					<Link to={"/demo"}>
-						<button type="button" className="btn btn-warning">Crear</button>
-					</Link>
-					<button type="button" className="btn btn-success">Right</button>
-				</div>
-			</div>
-			<div className="row">
-				{store.contactos.map((item, index) => {
+			<div className="row p-4">
+				{store.contactos?.map((item, index) => {
 					return (
-						<div key={item.id} className="col-3">
-							<div className="card">
-								<img src="..." className="card-img-top" alt="..."/>
-								<div key={index} className="card-body">
-									<h5 className="card-title">{item.name}</h5>
-									<p className="card-text">{item.address}</p>
-									<p className="card-text">{item.phone}</p>
-									<p className="card-text">{item.email}</p>
+						<div key={item.id} className="col-12 col-md-6 col-xl-4 p-3 ">
+							<Link className="estilo" to={`/single/${item.id}`} >
+								<div className="card rounded-pill fondo" key={index}>
+									<div className="">
+										<div className="card-body p-2 row">
+											<div className="col-5 col-sm-4 col-md-5 col-lg-4 ">
+												<img className="img-fluid rounded-circle float-start clearfix" src={fotoConIdFija(item.id)} />
+											</div>
+											<div className="d-flex align-items-center justify-content-center col-6 col-sm-6 col-md-6 col-lg-6 p-2">
+												<h5>{item.name}</h5>
+											</div>
+										</div>
+									</div>
 								</div>
-							</div>
+							</Link>
 						</div>
 					)
 				})
@@ -45,7 +48,4 @@ export const Home = () => {
 			</div>
 		</div>
 	)
-
-
-
 }
