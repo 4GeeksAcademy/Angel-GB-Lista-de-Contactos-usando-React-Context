@@ -10,8 +10,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			nombre: [],
 			address: [],
 			phone: [],
-			email: [],
-			genero: []
+			email: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -23,12 +22,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					fetch().then().then(data => setStore({ "foo": data.bar }))
 				*/
 			},
-			
-			// recuperarAgendas: () => {
-			// 	fetch("https://playground.4geeks.com/contact/agendas")
-			// 		.then(response => response.json())
-			// 		.then(response => setStore({ "agendas": response.agendas }))
-			// },
+			importarAgendasRandom: (user) => {
+				fetch(`https://randomuser.me/api/?results=${user}&gender=male&nat=es`)
+					.then(response => response.json())
+					.then(response => setStore({ "contactosRandomUser": response.results }))
+					.catch(error => console.log(error))
+			},
 			crearAgenda: () => {
 				fetch("https://playground.4geeks.com/contact/agendas/AngelGB", {
 					method: "POST"
@@ -54,18 +53,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			actualizarDireccion: (nuevaDireccion) => {
 				setStore({ address: [nuevaDireccion] });
 			},
-			actualizarGenero:(nuevoGenero) => {
-				setStore({ genero: [nuevoGenero]})
-			},
-			crearContacto: () => {
-				const store = getStore();
-				const contacto = {
-					name: store.nombre[0],
-					phone: store.phone[0],
-					email: store.email[0],
-					address: store.address[0]
-				};
-
+			crearContacto: (contacto) => {
 				fetch("https://playground.4geeks.com/contact/agendas/AngelGB/contacts", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
@@ -75,14 +63,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(() => getActions().recuperarAgenda())
 					.catch((error) => console.log(error));
 			},
-			editarContacto: (id) => {
-				const store = getStore();
-				const contacto = {
-					name: store.nombre[0],
-					phone: store.phone[0],
-					email: store.email[0],
-					address: store.address[0]
-				};
+			editarContacto: (id, contacto) => {
 				fetch(`https://playground.4geeks.com/contact/agendas/AngelGB/contacts/${id}`, {
 					method: "PUT",
 					headers: { "Content-Type": "application/json" },

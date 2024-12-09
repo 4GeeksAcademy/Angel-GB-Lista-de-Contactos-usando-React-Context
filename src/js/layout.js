@@ -5,12 +5,13 @@ import ScrollToTop from "./component/scrollToTop";
 import { Home } from "./views/home";
 import { AñadirContacto } from "./views/AñadirContacto.js";
 import { EditarContacto } from "./views/EditarContacto.jsx";
-import { AgendasFull } from "./views/AgendasFull.jsx";
+import { ImportarAgendas } from "./views/ImportarAgendas.jsx";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer";
 import { Toaster } from "sonner";
+import { Single } from "./views/single.jsx";
 
 
 //create your first component
@@ -24,12 +25,12 @@ const Layout = () => {
 			<Toaster richColors />
 			<BrowserRouter basename={basename}>
 				<ScrollToTop>
-				
 					<Navbar />
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/Agendas" element={<AgendasFull />} />
+						<Route path="/ImportarAgendas" element={<ImportarAgendas />} />
 						<Route path="/EditarContacto/:id" element={<EditarContacto />} />
+						<Route path="/single/:id" element={<Single />} />
 						<Route path="/AñadirContacto" element={<AñadirContacto />} />
 						<Route path="*" element={<h1>Not found!</h1>} />
 					</Routes>

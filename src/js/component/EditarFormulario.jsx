@@ -41,11 +41,17 @@ const EditarFormulario = () => {
     const enviarContacto = () => {
         if (formularioCompleto()) {
             const emailCompleto = `${email}${dominioEmail}`;
+            const contacto = {
+                name: name,
+                phone: phone,
+                email: emailCompleto,
+                address: address,
+            };
             actions.actualizarNombre(name);
             actions.actualizarDireccion(address);
             actions.actualizarTelefono(phone);
             actions.actualizarEmail(emailCompleto);
-            actions.editarContacto(id);
+            actions.editarContacto(id, contacto);
             toast.success('Contacto guardado correctamente', {
                 action: {
                   label: 'ok',
@@ -62,59 +68,51 @@ const EditarFormulario = () => {
                     <h3>Editar datos del contacto</h3>
                 </div>
                 <div className="card-body">
-                    <div className="input-group p-2">
-                        <span className="input-group-text">Nombre y apellido</span>
+                    <div className="input-group p-2 ">
+                        <span className="input-group-text col-12 col-md-3 col-lg-2">Nombre y apellido</span>
                         <input
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             type="text"
-                            className="form-control"
+                            maxLength={40}
+                            className="form-control col-12 col-md-7 col-lg-10"
                         />
                     </div>
                     <div className="input-group p-2">
-                        <span className="input-group-text">Dirección</span>
+                        <span className="input-group-text  col-12 col-md-2">Dirección</span>
                         <input
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                             type="text"
-                            className="form-control"
+                            className="form-control  col-12 col-md-10"
                         />
                     </div>
                     <div className="row">
-                        <div className="col-6">
+                        <div className="col-12 col-lg-5">
                             <div className="input-group p-2">
-                                <span className="input-group-text">Teléfono</span>
+                                <span className="input-group-text col-12 col-md-4 col-lg-4">Teléfono</span>
                                 <input
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
-                                    type="number"
-                                    className="form-control"
+                                    type="tel"
+                                    className="form-control col-12 col-md-8 col-lg-8"
+                                    maxLength={12}
                                 />
                             </div>
                         </div>
-                        {/* <div className="col-6">
+                        <div className="col-12 col-lg-7">
                             <div className="input-group p-2">
-                                <span className="input-group-text">Email</span>
-                                <input
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    type="email"
-                                    className="form-control"
-                                />
-                            </div> */}
-                        <div className="col-5">
-                            <div className="input-group p-2">
-                                <span className="input-group-text">Email</span>
+                                <span className="input-group-text col-12 col-lg-2">Email</span>
                                 <input
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     onKeyDown={(e) => {
-                                        if (e.key === "@") {
+                                        if (e.key === "@" || e.key === " ") {
                                             e.preventDefault();
                                         }
                                     }}
                                     type="email"
-                                    className="form-control"
+                                    className="form-control col-12 col-lg-10"
                                 />
                                 <select className="form-select" aria-label="Default select example"
                                 onChange={(e) => {setDominioEmail(e.target.value)}}>
@@ -134,13 +132,13 @@ const EditarFormulario = () => {
                             onClick={enviarContacto}
                             disabled={!formularioCompleto()}
                             type="button"
-                            className="btn btn-warning m-1"
+                            className="btn btn-info m-1"
                         >
                             Guardar
                         </button>
 
                         <Link to="/">
-                            <button type="button" className="btn btn-warning m-1">Volver</button>
+                            <button type="button" className="btn btn-info m-1">Volver</button>
                         </Link>
                     </div>
                 </div>
